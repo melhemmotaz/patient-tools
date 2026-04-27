@@ -1,0 +1,34 @@
+[[redirects]]
+  from = "/ipss"
+  to = "/ipss.html"
+  status = 200
+
+[[redirects]]
+  from = "/kidney"
+  to = "/kidney.html"
+  status = 200
+
+[[redirects]]
+  from = "/bladder"
+  to = "/bladder.html"
+  status = 200
+
+[[redirects]]
+  from = "/prostate"
+  to = "/prostate.html"
+  status = 200
+
+[[redirects]]
+  from = "/testosterone"
+  to = "/testosterone.html"
+  status = 200
+
+[[redirects]]
+  from = "/menshealth"
+  to = "/menshealth.html"
+  status = 200
+
+[[redirects]]
+  from = "/sexualhealth"
+  to = "/sexualhealth.html"
+  status = 200

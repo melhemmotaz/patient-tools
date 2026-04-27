@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-70R12ZD0F8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-70R12ZD0F8');
+
+  // Track tool open
+  gtag('event', 'tool_opened', {
+    event_category: 'IPSS_Calculator',
+    event_label: 'Tool Loaded'
+  });
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقياس IPSS — أعراض البروستات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:     #0F6E56;
+    --teal2:    #1A9478;
+    --teal-lt:  #E8F5F1;
+    --gold:     #D4A574;
+    --gold2:    #B8860B;
+    --sand:     #F4F1E9;
+    --dark:     #1C2B22;
+    --mid:      #4A5E52;
+    --light:    #8FA89A;
+    --white:    #FFFFFF;
+    --warn:     #E67E22;
+    --danger:   #C0392B;
+    --success:  #0F6E56;
+    --border:   #D8E8E2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--sand);
+    color: var(--dark);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--teal);
+    padding: 36px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; bottom: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 200%; height: 80px;
+    background: var(--sand);
+    border-radius: 50%;
+  }
+  .header-icon {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    font-weight: 300;
+    max-width: 340px;
+    margin: 0 auto 16px;
+    line-height: 1.6;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* ── INTRO CARD ── */
+  .intro-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .intro-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .intro-text { font-size: 0.82rem; color: var(--mid); line-height: 1.7; }
+  .intro-text strong { color: var(--teal); }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: var(--light);
+    margin-bottom: 8px; font-weight: 500;
+  }
+  .progress-bar-bg {
+    height: 6px; background: var(--border);
+    border-radius: 3px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--teal2);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 26px 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    animation: fadeUp 0.3s ease forwards;
+    opacity: 0;
+  }
+  .question-card.answered {
+    border-color: var(--teal2);
+    box-shadow: 0 4px 16px rgba(15,110,86,0.08);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-num {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--teal-lt);
+    color: var(--teal);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .q-text {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  /* Option buttons */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--sand);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Cairo', sans-serif;
+    text-align: right;
+    width: 100%;
+  }
+  .option-btn:hover {
+    border-color: var(--teal2);
+    background: var(--teal-lt);
+  }
+  .option-btn.selected {
+    border-color: var(--teal);
+    background: var(--teal-lt);
+  }
+  .option-btn.selected .opt-circle {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+  .option-btn.selected .opt-circle::after {
+    opacity: 1;
+  }
+  .opt-circle {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.2s;
+    margin-right: auto;
+  }
+  .opt-circle::after {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px; height: 8px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .opt-score {
+    font-size: 0.68rem;
+    color: var(--light);
+    font-weight: 500;
+    flex-shrink: 0;
+    min-width: 20px;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+  }
+  .opt-text {
+    font-size: 0.82rem;
+    color: var(--mid);
+    font-weight: 500;
+    flex: 1;
+    line-height: 1.4;
+  }
+  .option-btn.selected .opt-text { color: var(--teal); font-weight: 600; }
+
+  /* ── QOL QUESTION ── */
+  .qol-card {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 100%);
+    border-radius: 20px;
+    padding: 26px 24px;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .qol-card.visible { display: block; animation: fadeUp 0.4s ease forwards; }
+  .qol-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .qol-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .qol-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .qol-btn {
+    flex: 1; min-width: 60px;
+    padding: 10px 6px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.72rem;
+    text-align: center;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .qol-btn:hover { background: rgba(255,255,255,0.2); }
+  .qol-btn.selected { background: var(--white); color: var(--teal); font-weight: 700; }
+
+  /* ── CALCULATE BUTTON ── */
+  .calc-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: 16px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+    display: none;
+    letter-spacing: 0.02em;
+  }
+  .calc-btn.visible { display: block; animation: fadeUp 0.3s ease forwards; }
+  .calc-btn:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,110,86,0.3); }
+  .calc-btn:disabled { background: var(--light); cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ── RESULT ── */
+  .result-card {
+    display: none;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .result-card.visible { display: block; }
+
+  .result-header {
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .result-score-ring {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 6px solid rgba(255,255,255,0.3);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    background: rgba(255,255,255,0.15);
+  }
+  .result-num {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .result-max { font-size: 0.72rem; color: rgba(255,255,255,0.7); }
+  .result-label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .result-sublabel { font-size: 0.82rem; color: rgba(255,255,255,0.8); }
+
+  .result-body { background: var(--white); padding: 24px; }
+  .result-meaning {
+    font-size: 0.88rem;
+    color: var(--mid);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--sand);
+    border-radius: 12px;
+  }
+
+  .result-breakdown {
+    margin-bottom: 20px;
+  }
+  .breakdown-title {
+    font-size: 0.75rem;
+    color: var(--light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-q { color: var(--mid); flex: 1; }
+  .breakdown-score {
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
+  /* ── CTA ── */
+  .cta-card {
+    background: var(--teal);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    display: none;
+  }
+  .cta-card.visible { display: block; animation: fadeUp 0.5s ease 0.2s forwards; opacity: 0; }
+  .cta-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .cta-sub {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+  .cta-buttons { display: flex; flex-direction: column; gap: 10px; }
+  .cta-btn {
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s;
+  }
+  .cta-btn.whatsapp {
+    background: #25D366;
+    color: white;
+    border: none;
+  }
+  .cta-btn.whatsapp:hover { background: #1ebe5b; }
+  .cta-btn.phone {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1.5px solid rgba(255,255,255,0.4);
+  }
+  .cta-btn.phone:hover { background: rgba(255,255,255,0.25); }
+
+  .restart-btn {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--light);
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.2s;
+    display: none;
+  }
+  .restart-btn.visible { display: block; }
+  .restart-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--light);
+    margin-top: 24px;
+    line-height: 1.6;
+    padding: 0 10px;
+  }
+
+  /* ── DOCTOR BADGE ── */
+  .doctor-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+  }
+  .doc-avatar {
+    width: 44px; height: 44px;
+    background: var(--teal-lt);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .doc-info { flex: 1; }
+  .doc-name { font-size: 0.85rem; font-weight: 700; color: var(--dark); }
+  .doc-cred { font-size: 0.72rem; color: var(--light); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>مقياس أعراض البروستات الدولي</h1>
+  <p>أجب على الأسئلة التالية للحصول على تقييم دقيق لأعراضك</p>
+</div>
+
+<div class="main">
+
+  <!-- Doctor badge -->
+  <div class="doctor-badge">
+    <div class="doc-info">
+      <div class="doc-name">د. معتز جمال ملحم</div>
+      <div class="doc-cred">استشاري جراحة الكلى والمسالك البولية وأمراض الذكورة — FRCS (Urol) — مجمع الحياة الطبي</div>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro-card">
+    <div class="intro-icon">ℹ️</div>
+    <div class="intro-text">
+      يُقيّم هذا المقياس <strong>أعراض تضخم البروستات الحميد</strong>. لكل سؤال، اختر الإجابة التي تنطبق على حالتك خلال <strong>الشهر الماضي</strong>. النتيجة لا تُشكّل تشخيصاً طبياً.
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progressText">السؤال 1 من 7</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div id="questionsContainer"></div>
+
+  <!-- QoL question -->
+  <div class="qol-card" id="qolCard">
+    <div class="qol-title">سؤال جودة الحياة</div>
+    <div class="qol-sub">لو بقيت أعراض المسالك البولية كما هي طوال حياتك، كيف ستشعر حيال ذلك؟</div>
+    <div class="qol-options">
+      <button class="qol-btn" onclick="selectQol(0, this)">سعيد جداً<br>0</button>
+      <button class="qol-btn" onclick="selectQol(1, this)">سعيد<br>1</button>
+      <button class="qol-btn" onclick="selectQol(2, this)">راضٍ<br>2</button>
+      <button class="qol-btn" onclick="selectQol(3, this)">محايد<br>3</button>
+      <button class="qol-btn" onclick="selectQol(4, this)">غير راضٍ<br>4</button>
+      <button class="qol-btn" onclick="selectQol(5, this)">تعيس<br>5</button>
+      <button class="qol-btn" onclick="selectQol(6, this)">سيء جداً<br>6</button>
+    </div>
+  </div>
+
+  <!-- Calculate button -->
+  <button class="calc-btn" id="calcBtn" onclick="calculate()">
+    احسب النتيجة ←
+  </button>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="result-header" id="resultHeader">
+      <div class="result-score-ring">
+        <div class="result-num" id="resultNum">0</div>
+        <div class="result-max">من 35</div>
+      </div>
+      <div class="result-label" id="resultLabel"></div>
+      <div class="result-sublabel" id="resultSublabel"></div>
+    </div>
+    <div class="result-body">
+      <div class="result-meaning" id="resultMeaning"></div>
+      <div class="result-breakdown">
+        <div class="breakdown-title">تفصيل إجاباتك</div>
+        <div id="breakdownRows"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-card" id="ctaCard">
+    <div class="cta-title" id="ctaTitle"></div>
+    <div class="cta-sub" id="ctaSub"></div>
+    <div class="cta-buttons">
+      <a href="https://wa.me/962793900700" onclick="gtag('event', 'whatsapp_clicked', {event_category: 'IPSS_Calculator', event_label: 'WhatsApp CTA'});" class="cta-btn whatsapp" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span>واتساب</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Restart -->
+  <button class="restart-btn" id="restartBtn" onclick="restart()">
+    🔄 إعادة التقييم
+  </button>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    هذا التقييم للأغراض التعليمية فقط ولا يُغني عن الاستشارة الطبية المتخصصة.<br>
+    مجمع الحياة الطبي، شارع ابن خلدون، عمان
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const questions = [
+  {
+    text: "خلال الشهر الماضي، كم مرة شعرت بأن مثانتك لم تفرغ بالكامل بعد انتهائك من التبول؟",
+    short: "الإحساس بعدم اكتمال التبول"
+  },
+  {
+    text: "خلال الشهر الماضي، كم مرة احتجت إلى التبول مجدداً خلال ساعتين من آخر مرة تبولت فيها؟",
+    short: "تكرار التبول"
+  },
+  {
+    text: "خلال الشهر الماضي، كم مرة وجدت أن البول يتوقف ويعود مرة أخرى أثناء التبول؟",
+    short: "انقطاع تدفق البول"
+  },
+  {
+    text: "خلال الشهر الماضي، كم مرة شعرت برغبة ملحة ومفاجئة في التبول يصعب تأجيلها؟",
+    short: "الرغبة الملحة في التبول"
+  },
+  {
+    text: "خلال الشهر الماضي، كم مرة لاحظت ضعف تدفق البول؟",
+    short: "ضعف تدفق البول"
+  },
+  {
+    text: "خلال الشهر الماضي، كم مرة شعرت بصعوبة في بدء التبول واحتجت إلى بذل مجهود؟",
+    short: "الحاجة للضغط لبدء التبول"
+  },
+  {
+    text: "خلال الشهر الماضي، كم مرة في المتوسط استيقظت من النوم ليلاً للتبول؟",
+    short: "التبول الليلي",
+    nightQ: true
+  }
+];
+
+const options = [
+  { text: "أبداً",           score: 0 },
+  { text: "أقل من مرة واحدة من كل خمس مرات",  score: 1 },
+  { text: "أقل من نصف الوقت", score: 2 },
+  { text: "نصف الوقت تقريباً",score: 3 },
+  { text: "أكثر من نصف الوقت",score: 4 },
+  { text: "دائماً تقريباً",   score: 5 },
+];
+
+const nightOptions = [
+  { text: "لا أبداً", score: 0 },
+  { text: "مرة واحدة", score: 1 },
+  { text: "مرتان", score: 2 },
+  { text: "3 مرات", score: 3 },
+  { text: "4 مرات", score: 4 },
+  { text: "5 مرات أو أكثر", score: 5 },
+];
+
+let answers   = new Array(7).fill(null);
+let qolAnswer = null;
+let answered  = 0;
+
+// ── BUILD QUESTIONS ───────────────────────────────────────────────────
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  questions.forEach((q, qi) => {
+    const opts = q.nightQ ? nightOptions : options;
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `q${qi}`;
+    card.style.animationDelay = `${qi * 0.06}s`;
+
+    card.innerHTML = `
+      <div class="q-num">${qi + 1}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options">
+        ${opts.map((o, oi) => `
+          <button class="option-btn" onclick="selectAnswer(${qi}, ${oi}, this)">
+            <span class="opt-score">${o.score}</span>
+            <span class="opt-text">${o.text}</span>
+            <span class="opt-circle"></span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ── SELECT ANSWER ─────────────────────────────────────────────────────
+function selectAnswer(qi, oi, btn) {
+  const opts = qi === 6 ? nightOptions : options;
+  const wasAnswered = answers[qi] !== null;
+
+  // Clear prev selection
+  const card = document.getElementById(`q${qi}`);
+  card.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+
+  // Set new
+  btn.classList.add('selected');
+  answers[qi] = opts[oi].score;
+
+  if (!wasAnswered) {
+    answered++;
+    card.classList.add('answered');
+  }
+
+  updateProgress();
+  checkShowQol();
+  checkShowCalc();
+}
+
+function selectQol(score, btn) {
+  document.querySelectorAll('.qol-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  qolAnswer = score;
+  checkShowCalc();
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────
+function updateProgress() {
+  const total = 7;
+  const pct   = Math.round((answered / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent  = pct + '%';
+  document.getElementById('progressText').textContent =
+    answered < total ? `السؤال ${answered + 1} من ${total}` : 'اكتمل التقييم ✓';
+}
+
+function checkShowQol() {
+  if (answered >= 7) {
+    document.getElementById('qolCard').classList.add('visible');
+  }
+}
+
+function checkShowCalc() {
+  const btn = document.getElementById('calcBtn');
+  if (answered >= 7) {
+    btn.classList.add('visible');
+    btn.disabled = (qolAnswer === null);
+  }
+}
+
+// ── CALCULATE ─────────────────────────────────────────────────────────
+function calculate() {
+  const total = answers.reduce((a, b) => a + b, 0);
+
+  // Track questionnaire completion with score
+  gtag('event', 'questionnaire_completed', {
+    event_category: 'IPSS_Calculator',
+    event_label: total <= 7 ? 'Mild' : total <= 19 ? 'Moderate' : 'Severe',
+    value: total
+  });
+
+  let severity, color, meaning, ctaTitle, ctaSub;
+
+  if (total <= 7) {
+    severity   = "أعراض خفيفة";
+    color      = "#1A7A4A";
+    meaning    = `نتيجتك ${total} من 35 تشير إلى أعراض خفيفة لتضخم البروستات. هذا المستوى لا يستدعي عادةً علاجاً عاجلاً، لكن يُنصح بالمتابعة الدورية مع طبيب مختص للتأكد من عدم تطور الأعراض مع الوقت.`;
+    ctaTitle   = "نصيحة طبية";
+    ctaSub     = "أعراضك خفيفة حالياً. يُنصح بمراجعة طبيب مختص للمتابعة الدورية والحصول على إرشادات الوقاية.";
+  } else if (total <= 19) {
+    severity   = "أعراض متوسطة";
+    color      = "#E67E22";
+    meaning    = `نتيجتك ${total} من 35 تشير إلى أعراض متوسطة الشدة. هذا المستوى يؤثر على جودة حياتك اليومية ويستدعي تقييماً طبياً متخصصاً. قد تحتاج إلى علاج بالأدوية أو تغييرات في نمط الحياة.`;
+    ctaTitle   = "يُنصح بمراجعة الطبيب";
+    ctaSub     = "أعراضك المتوسطة تستدعي تقييماً طبياً متخصصاً. احجز استشارتك اليوم.";
+  } else {
+    severity   = "أعراض شديدة";
+    color      = "#C0392B";
+    meaning    = `نتيجتك ${total} من 35 تشير إلى أعراض شديدة تؤثر بشكل كبير على حياتك اليومية. هذا المستوى يستدعي مراجعة طبية عاجلة. قد تكون هناك حاجة لتدخل علاجي أو جراحي لتحسين جودة حياتك.`;
+    ctaTitle   = "مراجعة طبية عاجلة";
+    ctaSub     = "أعراضك الشديدة تحتاج إلى تقييم طبي عاجل. تواصل معنا الآن.";
+  }
+
+  // Show result card
+  const resultCard = document.getElementById('resultCard');
+  resultCard.style.display = 'block';
+  resultCard.classList.add('visible');
+  document.getElementById('resultHeader').style.background = color;
+  document.getElementById('resultNum').textContent    = total;
+  document.getElementById('resultLabel').textContent  = severity;
+  document.getElementById('resultSublabel').textContent = `نقطة من 35${qolAnswer !== null ? ` · جودة الحياة: ${qolAnswer}/6` : ''}`;
+  document.getElementById('resultMeaning').textContent = meaning;
+
+  // Breakdown
+  const rows = document.getElementById('breakdownRows');
+  rows.innerHTML = '';
+  questions.forEach((q, i) => {
+    const scoreColor = answers[i] >= 4 ? '#C0392B' : answers[i] >= 2 ? '#E67E22' : '#1A7A4A';
+    rows.innerHTML += `
+      <div class="breakdown-row">
+        <span class="breakdown-q">${q.short}</span>
+        <span class="breakdown-score" style="background:${scoreColor}20;color:${scoreColor}">${answers[i]}</span>
+      </div>
+    `;
+  });
+
+  // CTA
+  document.getElementById('ctaTitle').textContent = ctaTitle;
+  document.getElementById('ctaSub').textContent   = ctaSub;
+  document.getElementById('ctaCard').classList.add('visible');
+  document.getElementById('restartBtn').classList.add('visible');
+
+  // Hide calc button, scroll to result
+  document.getElementById('calcBtn').style.display = 'none';
+  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── RESTART ───────────────────────────────────────────────────────────
+function restart() {
+  answers   = new Array(7).fill(null);
+  qolAnswer = null;
+  answered  = 0;
+
+  document.getElementById('questionsContainer').innerHTML = '';
+  document.getElementById('qolCard').classList.remove('visible');
+  document.getElementById('calcBtn').classList.remove('visible');
+  document.getElementById('calcBtn').style.display = '';
+  document.getElementById('resultCard').classList.remove('visible');
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('ctaCard').classList.remove('visible');
+  document.getElementById('restartBtn').classList.remove('visible');
+  document.querySelectorAll('.qol-btn').forEach(b => b.classList.remove('selected'));
+
+  updateProgress();
+  buildQuestions();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+buildQuestions();
+updateProgress();
+</script>
+</body>
+</html>

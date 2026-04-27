@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقييم صحة الرجل الشامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-70R12ZD0F8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-70R12ZD0F8');
+  gtag('event', 'tool_opened', { event_category: 'Mens_Health_Score', event_label: 'Tool Loaded' });
+</script>
+
+<style>
+  :root {
+    --green:    #1B5E3B;
+    --green2:   #2E8B57;
+    --green3:   #3DAA6E;
+    --green-lt: #EEF8F3;
+    --gold:     #D4A574;
+    --dark:     #0D1F12;
+    --mid:      #2C4A32;
+    --light:    #6B8F72;
+    --cream:    #F5FBF6;
+    --white:    #FFFFFF;
+    --teal:     #0F6E56;
+    --border:   #B8D8C0;
+    --red:      #C0392B;
+    --orange:   #E67E22;
+    --score-a:  #2E7D52;
+    --score-b:  #1A6B8A;
+    --score-c:  #E67E22;
+    --score-d:  #C0392B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    direction: rtl;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--green) 0%, var(--green2) 50%, var(--green3) 100%);
+    padding: 32px 24px 52px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .header::after {
+    content: ''; position: absolute; bottom: -30px; left: 50%;
+    transform: translateX(-50%); width: 200%; height: 60px;
+    background: var(--cream); border-radius: 50%;
+  }
+  .header-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+  .header h1 { font-size: 1.55rem; font-weight: 900; color: white; margin-bottom: 8px; line-height: 1.3; }
+  .header p { font-size: 0.85rem; color: rgba(255,255,255,0.85); max-width: 340px; margin: 0 auto; line-height: 1.6; }
+
+  .main { max-width: 600px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  /* Category tabs */
+  .category-indicator {
+    display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .cat-pill {
+    padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;
+    font-weight: 700; border: 1.5px solid var(--border);
+    background: white; color: var(--light); transition: all 0.2s;
+  }
+  .cat-pill.active { background: var(--green2); border-color: var(--green2); color: white; }
+  .cat-pill.done { background: var(--green-lt); border-color: var(--green2); color: var(--green2); }
+
+  .share-hook {
+    background: var(--green-lt); border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 16px 20px;
+    margin-bottom: 24px; display: flex; gap: 12px; align-items: center;
+  }
+  .hook-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .hook-text { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
+  .hook-text strong { color: var(--green2); }
+
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--light); margin-bottom: 8px; font-weight: 600; }
+  .progress-bar-bg { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green3)); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+
+  .question-card {
+    background: var(--white); border-radius: 20px; padding: 24px;
+    margin-bottom: 14px; border: 1.5px solid var(--border);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    animation: fadeUp 0.3s ease forwards; opacity: 0;
+  }
+  .question-card.answered { border-color: var(--green2); box-shadow: 0 4px 16px rgba(46,139,87,0.1); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-category {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--green2); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .q-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; background: var(--green-lt); color: var(--green2);
+    border-radius: 50%; font-size: 0.68rem; font-weight: 700;
+  }
+  .q-text { font-size: 0.92rem; font-weight: 600; color: var(--dark); line-height: 1.6; margin-bottom: 16px; }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border: 1.5px solid var(--border);
+    border-radius: 12px; background: var(--cream);
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'Cairo', sans-serif; text-align: right; width: 100%;
+  }
+  .option-btn:hover { border-color: var(--green2); background: var(--green-lt); }
+  .option-btn.selected { border-color: var(--green2); background: var(--green-lt); }
+  .opt-circle {
+    width: 20px; height: 20px; border: 2px solid var(--border);
+    border-radius: 50%; flex-shrink: 0; position: relative;
+    transition: all 0.2s; margin-right: auto;
+  }
+  .option-btn.selected .opt-circle { background: var(--green2); border-color: var(--green2); }
+  .option-btn.selected .opt-circle::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 7px; height: 7px; background: white; border-radius: 50%;
+  }
+  .opt-text { font-size: 0.83rem; color: var(--mid); font-weight: 500; flex: 1; line-height: 1.4; }
+  .option-btn.selected .opt-text { color: var(--green); font-weight: 600; }
+  .opt-pts {
+    font-size: 0.65rem; padding: 2px 8px; border-radius: 8px;
+    font-weight: 700; flex-shrink: 0;
+    background: var(--green-lt); color: var(--green2);
+  }
+
+  .calc-btn {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, var(--green), var(--green3));
+    color: white; border: none; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 800;
+    font-family: 'Cairo', sans-serif; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 16px; display: none;
+    box-shadow: 0 6px 20px rgba(27,94,59,0.35);
+  }
+  .calc-btn.visible { display: block; animation: fadeUp 0.3s ease forwards; opacity: 0; }
+  .calc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(27,94,59,0.45); }
+
+  /* Result */
+  .result-card { display: none; border-radius: 20px; overflow: hidden; margin-bottom: 24px; }
+  .result-card.visible { display: block; animation: fadeUp 0.5s ease forwards; opacity: 0; }
+
+  .result-header { padding: 32px 24px; text-align: center; }
+  .score-display {
+    width: 130px; height: 130px; border-radius: 50%;
+    border: 6px solid rgba(255,255,255,0.3);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 16px; background: rgba(255,255,255,0.15);
+  }
+  .score-grade { font-size: 3.5rem; font-weight: 900; color: white; line-height: 1; }
+  .score-label { font-size: 0.65rem; color: rgba(255,255,255,0.8); font-weight: 600; }
+  .result-title { font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: 6px; }
+  .result-sub { font-size: 0.82rem; color: rgba(255,255,255,0.8); }
+
+  .result-body { background: white; padding: 24px; }
+  .result-meaning {
+    font-size: 0.88rem; color: var(--mid); line-height: 1.8;
+    margin-bottom: 20px; padding: 16px; background: var(--cream);
+    border-radius: 12px; border-right: 4px solid var(--green2);
+  }
+
+  /* Domain scores */
+  .domain-scores { margin-bottom: 20px; }
+  .domain-title { font-size: 0.72rem; color: var(--light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .domain-row { margin-bottom: 14px; }
+  .domain-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--mid); margin-bottom: 6px; font-weight: 500; }
+  .domain-bar-bg { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .domain-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+  .cta-card {
+    background: linear-gradient(135deg, var(--teal), #1A9478);
+    border-radius: 20px; padding: 28px 24px;
+    text-align: center; display: none;
+  }
+  .cta-card.visible { display: block; animation: fadeUp 0.5s ease 0.2s forwards; opacity: 0; }
+  .cta-title { font-size: 1.1rem; font-weight: 800; color: white; margin-bottom: 8px; }
+  .cta-sub { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-bottom: 22px; line-height: 1.6; }
+
+  .cta-btn {
+    width: 100%; padding: 15px; border-radius: 12px;
+    font-size: 0.92rem; font-weight: 700; font-family: 'Cairo', sans-serif;
+    cursor: pointer; text-decoration: none;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: all 0.2s; margin-bottom: 10px;
+  }
+  .cta-btn.whatsapp { background: #25D366; color: white; border: none; }
+  .cta-btn.whatsapp:hover { background: #1ebe5b; }
+  .cta-btn.share { background: rgba(255,255,255,0.15); color: white; border: 1.5px solid rgba(255,255,255,0.4); }
+  .cta-btn.share:hover { background: rgba(255,255,255,0.25); }
+
+  .restart-btn {
+    width: 100%; padding: 13px; background: transparent;
+    border: 1.5px solid var(--border); border-radius: 12px;
+    font-size: 0.85rem; font-weight: 600; color: var(--light);
+    font-family: 'Cairo', sans-serif; cursor: pointer;
+    margin-top: 16px; transition: all 0.2s; display: none;
+  }
+  .restart-btn.visible { display: block; }
+  .restart-btn:hover { border-color: var(--green2); color: var(--green2); }
+
+  .disclaimer { text-align: center; font-size: 0.7rem; color: var(--light); margin-top: 24px; line-height: 1.6; }
+
+  .doctor-badge {
+    display: flex; align-items: center; gap: 12px;
+    background: white; border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 18px; margin-bottom: 24px;
+  }
+  .doc-avatar {
+    width: 44px; height: 44px; background: var(--green-lt);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; font-size: 1.4rem;
+  }
+  .doc-name { font-size: 0.85rem; font-weight: 700; color: var(--dark); }
+  .doc-cred { font-size: 0.72rem; color: var(--light); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>تقييم صحة الرجل الشامل</h1>
+  <p>8 أسئلة تغطي أهم جوانب صحتك — اعرف أين أنت واحصل على تقريرك الصحي</p>
+</div>
+
+<div class="main">
+
+  <div class="doctor-badge">
+    <div style="padding-right:0">
+      <div class="doc-name">د. معتز جمال ملحم</div>
+      <div class="doc-cred">استشاري جراحة الكلى والمسالك البولية وأمراض الذكورة — FRCS (Urol)</div>
+    </div>
+  </div>
+
+  <div class="share-hook">
+    <div class="hook-icon">❤️</div>
+    <div class="hook-text">
+      <strong>أرسله لشخص تهتم بصحته</strong> — كثير من الرجال يتجاهلون صحتهم حتى يتأخر الوقت. هذا التقييم يستغرق دقيقة واحدة فقط
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progressText">السؤال 1 من 8</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div id="questionsContainer"></div>
+  <button class="calc-btn" id="calcBtn" onclick="calculate()">احصل على تقريرك الصحي ←</button>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-header" id="resultHeader">
+      <div class="score-display">
+        <div class="score-grade" id="scoreGrade">A</div>
+        <div class="score-label">تقييمك الصحي</div>
+      </div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-sub" id="resultSub"></div>
+    </div>
+    <div class="result-body">
+      <div class="result-meaning" id="resultMeaning"></div>
+      <div class="domain-scores">
+        <div class="domain-title">أداؤك في كل محور</div>
+        <div id="domainBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-card" id="ctaCard">
+    <div class="cta-title" id="ctaTitle"></div>
+    <div class="cta-sub" id="ctaSub"></div>
+    <a href="https://wa.me/962793900700"
+       class="cta-btn whatsapp"
+       onclick="gtag('event','whatsapp_clicked',{event_category:'Mens_Health_Score'});"
+       target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      واتساب — احجز استشارة
+    </a>
+      <a href="tel:+962793900700" class="cta-btn phone" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:12px;font-size:0.92rem;font-weight:700;font-family:'Cairo',sans-serif;text-decoration:none;background:rgba(255,255,255,0.15);color:white;border:1.5px solid rgba(255,255,255,0.4);margin-bottom:10px;">
+        📞 اتصل بنا
+      </a>
+    <button class="cta-btn share" onclick="shareResult()">📤 شارك التقييم</button>
+  </div>
+
+  <button class="restart-btn" id="restartBtn" onclick="restart()">🔄 إعادة التقييم</button>
+
+  <div class="disclaimer">
+    هذا التقييم للتوعية الصحية فقط ولا يُغني عن الاستشارة الطبية المتخصصة<br>
+    مجمع الحياة الطبي، شارع ابن خلدون، عمان
+  </div>
+</div>
+
+<script>
+const questions = [
+  { cat: "🏃 النشاط البدني", domain: "activity", text: "كم مرة تمارس الرياضة أسبوعياً؟", options: [
+    { text: "لا أمارس رياضة تقريباً", pts: 0 },
+    { text: "مرة إلى مرتين", pts: 1 },
+    { text: "3 مرات أو أكثر", pts: 2 },
+  ]},
+  { cat: "💧 الترطيب", domain: "hydration", text: "كم لتراً من الماء تشرب يومياً؟", options: [
+    { text: "أقل من لتر", pts: 0 },
+    { text: "لتر إلى لترين", pts: 1 },
+    { text: "أكثر من لترين", pts: 2 },
+  ]},
+  { cat: "😴 النوم", domain: "sleep", text: "كم ساعة تنام في الليلة عادةً؟", options: [
+    { text: "أقل من 5 ساعات", pts: 0 },
+    { text: "5 إلى 6 ساعات", pts: 1 },
+    { text: "7 ساعات أو أكثر", pts: 2 },
+  ]},
+  { cat: "🥗 التغذية", domain: "diet", text: "كيف تصف نظامك الغذائي؟", options: [
+    { text: "وجبات سريعة ومعالجة بشكل شبه يومي", pts: 0 },
+    { text: "متوازن أحياناً مع بعض الوجبات غير الصحية", pts: 1 },
+    { text: "متوازن يحتوي على خضروات وفواكه يومياً", pts: 2 },
+  ]},
+  { cat: "🚰 المسالك البولية", domain: "urinary", text: "هل تعاني من أي من هذه الأعراض؟", options: [
+    { text: "نعم، تبول متكرر أو ضعف في التدفق أو ألم", pts: 0 },
+    { text: "أحياناً أشعر ببعض الأعراض الخفيفة", pts: 1 },
+    { text: "لا، لا توجد أي أعراض", pts: 2 },
+  ]},
+  { cat: "❤️ الصحة الجنسية", domain: "sexual", text: "كيف تقيّم صحتك الجنسية عموماً؟", options: [
+    { text: "لاحظت تراجعاً واضحاً يؤثر على حياتي", pts: 0 },
+    { text: "بعض التراجع البسيط", pts: 1 },
+    { text: "جيدة ولا مشاكل", pts: 2 },
+  ]},
+  { cat: "🧠 الصحة النفسية", domain: "mental", text: "كيف مستوى ضغطك النفسي وتوترك؟", options: [
+    { text: "ضغط نفسي مرتفع وقلق مستمر", pts: 0 },
+    { text: "ضغط متوسط يمكن التحكم به أحياناً", pts: 1 },
+    { text: "مستقر نفسياً بشكل عام", pts: 2 },
+  ]},
+  { cat: "🏥 الفحص الدوري", domain: "checkup", text: "متى كان آخر فحص طبي شامل؟", options: [
+    { text: "لم أجرِ فحصاً شاملاً قط أو منذ أكثر من 3 سنوات", pts: 0 },
+    { text: "منذ سنة أو سنتين", pts: 1 },
+    { text: "خلال السنة الماضية", pts: 2 },
+  ]},
+];
+
+const domainLabels = {
+  activity: "النشاط البدني",
+  hydration: "الترطيب",
+  sleep: "النوم",
+  diet: "التغذية",
+  urinary: "المسالك البولية",
+  sexual: "الصحة الجنسية",
+  mental: "الصحة النفسية",
+  checkup: "الفحص الدوري"
+};
+
+let answers = new Array(8).fill(null);
+let answered = 0;
+
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `q${qi}`;
+    card.style.animationDelay = `${qi * 0.06}s`;
+    card.innerHTML = `
+      <div class="q-category"><span class="q-num">${qi+1}</span>${q.cat}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((o, oi) => `
+          <button class="option-btn" onclick="selectAnswer(${qi}, ${oi}, this)">
+            <span class="opt-pts">${o.pts === 2 ? '✓ جيد' : o.pts === 1 ? '~ متوسط' : '✗ يحتاج تحسين'}</span>
+            <span class="opt-text">${o.text}</span>
+            <span class="opt-circle"></span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(qi, oi, btn) {
+  const wasAnswered = answers[qi] !== null;
+  document.getElementById(`q${qi}`).querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[qi] = { ...questions[qi].options[oi], domain: questions[qi].domain };
+  if (!wasAnswered) {
+    answered++;
+    document.getElementById(`q${qi}`).classList.add('answered');
+  }
+  updateProgress();
+  if (answered >= 8) document.getElementById('calcBtn').classList.add('visible');
+}
+
+function updateProgress() {
+  const pct = Math.round((answered / 8) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressText').textContent =
+    answered < 8 ? `السؤال ${answered + 1} من 8` : 'اكتمل التقييم ✓';
+}
+
+function calculate() {
+  const total = answers.reduce((s, a) => s + (a ? a.pts : 0), 0);
+  const maxPts = 16;
+  const pct = Math.round((total / maxPts) * 100);
+
+  let grade, color, title, meaning, ctaTitle, ctaSub;
+
+  if (pct >= 80) {
+    grade = 'A'; color = '#2E7D52';
+    title = 'صحة ممتازة 🌟';
+    meaning = 'تقييمك يعكس اهتماماً جيداً بصحتك. معظم مؤشراتك الصحية في النطاق الجيد. استمر في هذا المسار مع الحرص على الفحص الدوري للحفاظ على هذا المستوى.';
+    ctaTitle = 'استمر في المسار الصحيح';
+    ctaSub = 'الفحص الدوري يساعد في الاكتشاف المبكر. احجز فحصك الشامل مع د. معتز.';
+  } else if (pct >= 60) {
+    grade = 'B'; color = '#1A6B8A';
+    title = 'صحة جيدة مع مجال للتحسين 👍';
+    meaning = 'صحتك بشكل عام جيدة لكن هناك بعض النقاط التي تحتاج إلى اهتمام. التحسينات الصغيرة في نمط حياتك يمكن أن تحدث فرقاً كبيراً في صحتك على المدى الطويل.';
+    ctaTitle = 'حسّن صحتك مع متخصص';
+    ctaSub = 'استشارة طبية متخصصة ستساعدك في وضع خطة صحية مخصصة. تواصل مع د. معتز.';
+  } else if (pct >= 40) {
+    grade = 'C'; color = '#E67E22';
+    title = 'صحتك تحتاج اهتماماً ⚠️';
+    meaning = 'نتائجك تشير إلى عدة نقاط تستحق الاهتمام. هذه ليست حالة طارئة لكنها تستدعي تغييرات في نمط حياتك ومراجعة طبية للتأكد من سلامة صحتك الشاملة.';
+    ctaTitle = 'ابدأ التغيير الآن';
+    ctaSub = 'لا تنتظر حتى تسوء الأمور. تواصل مع د. معتز لوضع خطة صحية شاملة.';
+  } else {
+    grade = 'D'; color = '#C0392B';
+    title = 'صحتك تحتاج تدخلاً عاجلاً 🚨';
+    meaning = 'نتائجك تشير إلى إهمال واضح لعدة جوانب صحية مهمة. هذا المستوى يزيد بشكل كبير من خطر الإصابة بأمراض مزمنة. المراجعة الطبية العاجلة والتغيير الجذري في نمط الحياة ضروريان.';
+    ctaTitle = 'تدخل طبي عاجل ضروري';
+    ctaSub = 'لا تؤجل — تواصل مع د. معتز اليوم لبدء رحلة التعافي الصحي.';
+  }
+
+  document.getElementById('resultCard').classList.add('visible');
+  document.getElementById('resultHeader').style.background = `linear-gradient(135deg, ${color}dd, ${color})`;
+  document.getElementById('scoreGrade').textContent = grade;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultSub').textContent = `${total} نقطة من ${maxPts} — ${pct}%`;
+  document.getElementById('resultMeaning').textContent = meaning;
+
+  // Domain bars
+  const bars = document.getElementById('domainBars');
+  answers.forEach((a, i) => {
+    if (!a) return;
+    const q = questions[i];
+    const domPct = Math.round((a.pts / 2) * 100);
+    const barColor = domPct >= 80 ? '#2E7D52' : domPct >= 50 ? '#1A6B8A' : domPct >= 30 ? '#E67E22' : '#C0392B';
+    bars.innerHTML += `
+      <div class="domain-row">
+        <div class="domain-label">
+          <span>${q.cat}</span>
+          <span style="font-weight:700;color:${barColor}">${domPct}%</span>
+        </div>
+        <div class="domain-bar-bg">
+          <div class="domain-bar-fill" style="width:0%;background:${barColor}" data-width="${domPct}"></div>
+        </div>
+      </div>
+    `;
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.domain-bar-fill').forEach(b => {
+      b.style.width = b.dataset.width + '%';
+    });
+  }, 400);
+
+  document.getElementById('ctaTitle').textContent = ctaTitle;
+  document.getElementById('ctaSub').textContent = ctaSub;
+  document.getElementById('ctaCard').classList.add('visible');
+  document.getElementById('restartBtn').classList.add('visible');
+  document.getElementById('calcBtn').style.display = 'none';
+
+  gtag('event', 'assessment_completed', {
+    event_category: 'Mens_Health_Score',
+    event_label: grade,
+    value: total
+  });
+
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function shareResult() {
+  const text = 'أجريت تقييم صحة الرجل الشامل مع د. معتز ملحم — استشاري المسالك البولية وأمراض الذكورة. جرب أنت: https://www.drmotazmelhem.com/ar';
+  if (navigator.share) { navigator.share({ text }); }
+  else { navigator.clipboard.writeText(text); alert('تم نسخ الرابط — شاركه مع من تحب'); }
+  gtag('event', 'result_shared', { event_category: 'Mens_Health_Score' });
+}
+
+function restart() {
+  answers = new Array(8).fill(null);
+  answered = 0;
+  document.getElementById('questionsContainer').innerHTML = '';
+  document.getElementById('calcBtn').classList.remove('visible');
+  document.getElementById('calcBtn').style.display = '';
+  document.getElementById('resultCard').classList.remove('visible');
+  document.getElementById('ctaCard').classList.remove('visible');
+  document.getElementById('restartBtn').classList.remove('visible');
+  document.getElementById('domainBars').innerHTML = '';
+  updateProgress();
+  buildQuestions();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildQuestions();
+updateProgress();
+</script>
+</body>
+</html>
